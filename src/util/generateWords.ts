@@ -1,4 +1,4 @@
-import isInDictionary from './isInDictionary';
+import isWord from './isWord';
 
 const ALPHABET: readonly string[] = [
   'a',
@@ -37,7 +37,7 @@ const generateWordsAux = (letters: string[], i: number, words: string[]): void =
   }
   if (i === letters.length) {
     const maybeWord = letters.join('');
-    if (isInDictionary(maybeWord)) {
+    if (isWord(maybeWord)) {
       words.push(maybeWord);
     }
 
