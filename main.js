@@ -1,10 +1,22 @@
+#!/usr/bin/env node
 const fs = require('fs');
-const cliArgs = process.argv.slice(2);
+const yargs = require('yargs');
+
+const argv = yargs(process.argv.slice(2))
+  .scriptName('phrase-generator')
+  .scriptName('phrase-generator')
+  .usage('$0 pattern')
+  .example(
+    '$0 "c*t *n **e **t", write out the possible phrases, one of which should be "cat in the hat"'
+  )
+  .alias('v', 'verbose')
+  .alias('h', 'help')
+  .help('help').argv;
 
 /** Validate */
-if (!cliArgs || cliArgs.length === 0) {
+if (argv._.length === 0) {
   return console.warn(
-    'No argument provided. Example of proper usage: node main.js "*at"'
+    'No argument provided. Example of proper usage: phrase-generator "c*t *n **e **t"'
   );
 }
 if (!fs.existsSync('./dist/index.js')) {
@@ -17,19 +29,14 @@ if (!fs.existsSync('./dist/index.js')) {
 if (fs.existsSync('out')) {
   fs.rmSync('out', { recursive: true });
 }
+fs.mkdirSync('out');
 
 /** Generate */
+const writeStream = fs.createWriteStream('out/phrases.txt');
 const generate = require('./dist/index').default;
-const phraseLike = cliArgs[0].toLowerCase();
+const phraseLike = argv._[0].toLowerCase();
 console.log(`Generating phrases for: "${phraseLike}"`);
-const phrases = generate(phraseLike);
-
-/** Write results */
-console.log('Writing results...');
-if (!fs.existsSync('out/')) {
-  fs.mkdirSync('out/');
-}
-fs.writeFileSync('out/phrases.json', JSON.stringify(phrases, null, 4));
+generate(phraseLike, writeStream, { verbose: argv.verbose });
 
 console.log('Success!');
-console.log('Results written to out/phrases.json');
+console.log('Results written to out/phrases.txt');
