@@ -7,7 +7,7 @@ One strong use case is for word games and puzzles, for example.
 
 ## Installation
 1. Clone the repo and navigate to the root directory `phrase-generator`
-2. Execute `npm ci && npm link`
+2. Execute `npm ci && npm run build && npm link`
 
 ## Usage
 ```sh
