@@ -5,12 +5,16 @@ Phrase Generator is a CLI tool that generates possible phrases in English based 
 
 One strong use case is for word games and puzzles, for example.
 
+## Installation
+1. Clone the repo and navigate to the root directory `phrase-generator`
+2. Execute `npm ci && npm link`
+
 ## Usage
 ```sh
 $ phrase-generator "appl* bana**"
 ```
 
-This will write the following result to a file:
+This will write the following result to a file `out/phrases.txt`:
 ```txt
 apple banaks
 apple banana
