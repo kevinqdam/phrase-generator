@@ -32,6 +32,12 @@ if (fs.existsSync('out')) {
 fs.mkdirSync('out');
 
 /** Generate */
+
+/**
+ * Reference: https://stackoverflow.com/questions/8313628/node-js-request-how-to-emitter-setmaxlisteners
+ */
+// require('events').EventEmitter.prototype.setMaxListeners(20);
+
 const writeStream = fs.createWriteStream('out/phrases.txt');
 const generate = require('./dist/index').default;
 const phraseLike = argv._[0].toLowerCase();
