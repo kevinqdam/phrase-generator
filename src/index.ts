@@ -7,7 +7,8 @@ type GenerateOptions = {
 };
 
 /**
- * Enter a phrase with wildcard characters, generate the rest from the english dictionary
+ * Enter a phrase with wildcard characters, generate the rest from the english dictionary.
+ * Phrases are written to a file.
  *
  * e.g. "a*" -> [ax, ab, am, aw, ag, ah, ay, ad, al, an, aa, ae, ai, ar, as, at]
  */
@@ -15,12 +16,10 @@ const generate = (
   phraseLike: string,
   ws: WriteStream,
   options?: GenerateOptions
-): string[] => {
+): void => {
   const wordLikes = phraseLike.split(' ');
-  const wordsToZip = wordLikes.map(generateWords);
-  const phrases = generatePhrases(wordsToZip, ws, options?.verbose);
-
-  return phrases;
+  const wordGenerators = wordLikes.map(generateWords);
+  generatePhrases(wordGenerators, ws, options?.verbose);
 };
 
 export default generate;
