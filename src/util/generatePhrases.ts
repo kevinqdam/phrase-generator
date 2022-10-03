@@ -3,7 +3,7 @@ import { WriteStream } from 'fs';
 const phraseGeneratorFromWordGenerators = function* (
   wordGenerators: (() => Generator<string>)[],
   i = 0,
-  phraseParts: string[] = [],
+  phraseParts: string[] = []
 ): Generator<string> {
   if (i === wordGenerators.length) {
     yield phraseParts.join(' ');
@@ -11,13 +11,21 @@ const phraseGeneratorFromWordGenerators = function* (
     const words = wordGenerators[i]();
     for (const word of words) {
       phraseParts.push(word);
-      yield* phraseGeneratorFromWordGenerators(wordGenerators, i + 1, phraseParts);
+      yield* phraseGeneratorFromWordGenerators(
+        wordGenerators,
+        i + 1,
+        phraseParts
+      );
       phraseParts.pop();
     }
   }
 };
 
-const generatePhrases = (wordGenerators: (() => Generator<string>)[], ws: WriteStream, verbose?: boolean): void => {
+const generatePhrases = async (
+  wordGenerators: (() => Generator<string>)[],
+  ws: WriteStream,
+  verbose?: boolean
+): Promise<void> => {
   const phraseGenerator = phraseGeneratorFromWordGenerators(wordGenerators);
   for (const phrase of phraseGenerator) {
     if (verbose) {
@@ -30,11 +38,9 @@ const generatePhrases = (wordGenerators: (() => Generator<string>)[], ws: WriteS
      *
      * Reference: https://stackoverflow.com/questions/50357777/why-does-attempting-to-write-a-large-file-cause-js-heap-to-run-out-of-memory
      */
-    (async () => {
-      if (!ws.write(phrase + '\n')) {
-        await new Promise((resolve) => ws.once('drain', resolve));
-      }
-    })();
+    if (!ws.write(phrase + '\n')) {
+      await new Promise((resolve) => ws.once('drain', resolve));
+    }
   }
 };
 

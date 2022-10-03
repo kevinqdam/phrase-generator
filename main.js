@@ -8,7 +8,7 @@ const argv = yargs(process.argv.slice(2))
   .usage('$0 pattern')
   .example(
     '$0 "c*t *n **e **t"',
-    'write out the possible phrases, one of which should be "cat in the hat"'
+    'write out the possible phrases, one of which should be "cat in the hat" in this example'
   )
   .alias('v', 'verbose')
   .alias('h', 'help')
@@ -33,17 +33,12 @@ if (fs.existsSync('out')) {
 fs.mkdirSync('out');
 
 /** Generate */
-
-/**
- * Reference: https://stackoverflow.com/questions/8313628/node-js-request-how-to-emitter-setmaxlisteners
- */
-require('events').EventEmitter.prototype.setMaxListeners(20);
-
 const writeStream = fs.createWriteStream('out/phrases.txt');
 const generate = require('./dist/index').default;
 const phraseLike = argv._[0].toLowerCase();
 console.log(`Generating phrases for: "${phraseLike}"`);
-generate(phraseLike, writeStream, { verbose: argv.verbose });
-
-console.log('Success!');
-console.log('Results written to out/phrases.txt');
+generate(phraseLike, writeStream, { verbose: argv.verbose }).then(() => {
+  writeStream.end();
+  console.log('Success!');
+  console.log('Results written to out/phrases.txt');
+});

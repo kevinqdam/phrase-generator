@@ -12,14 +12,14 @@ type GenerateOptions = {
  *
  * e.g. "a*" -> [ax, ab, am, aw, ag, ah, ay, ad, al, an, aa, ae, ai, ar, as, at]
  */
-const generate = (
+const generate = async (
   phraseLike: string,
   ws: WriteStream,
   options?: GenerateOptions
-): void => {
+): Promise<void> => {
   const wordLikes = phraseLike.split(' ');
   const wordGenerators = wordLikes.map(generateWords);
-  generatePhrases(wordGenerators, ws, options?.verbose);
+  await generatePhrases(wordGenerators, ws, options?.verbose);
 };
 
 export default generate;

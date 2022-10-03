@@ -29,7 +29,10 @@ const ALPHABET: readonly string[] = [
   'z',
 ];
 
-const generateWordsAux = function*(letters: string[], i = 0): Generator<string> {
+const generateWordsAux = function* (
+  letters: string[],
+  i = 0
+): Generator<string> {
   if (i === 0 && !letters.includes('*')) {
     yield letters.join('');
 
@@ -55,7 +58,9 @@ const generateWordsAux = function*(letters: string[], i = 0): Generator<string> 
   }
 };
 
-const generatorFromWordLike = function (wordLike: string): () => Generator<string> {
+const generatorFromWordLike = function (
+  wordLike: string
+): () => Generator<string> {
   const letters = wordLike.split('');
   return () => generateWordsAux(letters);
 };
