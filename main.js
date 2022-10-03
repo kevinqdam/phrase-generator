@@ -7,7 +7,8 @@ const argv = yargs(process.argv.slice(2))
   .scriptName('phrase-generator')
   .usage('$0 pattern')
   .example(
-    '$0 "c*t *n **e **t", write out the possible phrases, one of which should be "cat in the hat"'
+    '$0 "c*t *n **e **t"',
+    'write out the possible phrases, one of which should be "cat in the hat"'
   )
   .alias('v', 'verbose')
   .alias('h', 'help')
@@ -36,7 +37,7 @@ fs.mkdirSync('out');
 /**
  * Reference: https://stackoverflow.com/questions/8313628/node-js-request-how-to-emitter-setmaxlisteners
  */
-// require('events').EventEmitter.prototype.setMaxListeners(20);
+require('events').EventEmitter.prototype.setMaxListeners(20);
 
 const writeStream = fs.createWriteStream('out/phrases.txt');
 const generate = require('./dist/index').default;
